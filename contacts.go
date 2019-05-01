@@ -4,6 +4,15 @@ import (
 	"encoding/json"
 )
 
+type ContactPerson struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Phone     string `json:"phone,omitempty"`
+	Skype     string `json:"skype,omitempty"`
+	IsPrimary bool   `json:"is_primary"`
+}
+
 // Contact struct represents the information of the contact
 type Contact struct {
 	ID           string `json:"contact_id"`
@@ -14,8 +23,9 @@ type Contact struct {
 	ContactType  string `json:"contact_type"`
 	Notes        string `json:"notes"`
 
-	BillingAddress  billingAddress `json:"billing_address"`
-	ShippingAddress billingAddress `json:"shipping_address"`
+	ContactPersons  []ContactPerson `json:"contact_persons"`
+	BillingAddress  billingAddress  `json:"billing_address"`
+	ShippingAddress billingAddress  `json:"shipping_address"`
 
 	// possible values ---> vat_registered,vat_not_registered,gcc_vat_not_registered,gcc_vat_registered,non_gcc,dz_vat_registered and dz_vat_not_registered.
 	TaxTreatment string `json:"tax_treatment"`
@@ -50,8 +60,9 @@ type CustomerParams struct {
 	ContactType  string `json:"contact_type,omitempty"`
 	Notes        string `json:"notes,omitempty"`
 
-	BillingAddress  billingAddress `json:"billing_address,omitempty"`
-	ShippingAddress billingAddress `json:"shipping_address,omitempty"`
+	ContactPersons  []ContactPerson `json:"contact_persons"`
+	BillingAddress  billingAddress  `json:"billing_address,omitempty"`
+	ShippingAddress billingAddress  `json:"shipping_address,omitempty"`
 
 	// possible values ---> vat_registered,vat_not_registered,gcc_vat_not_registered,gcc_vat_registered,non_gcc,dz_vat_registered and dz_vat_not_registered.
 	TaxTreatment string `json:"tax_treatment,omitempty"`
