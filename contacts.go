@@ -52,6 +52,10 @@ type BillingAddress struct {
 	Phone     string `json:"phone"`
 }
 
+type CustomerFindOptions struct {
+	EmailContains string
+}
+
 // CustomerParams struct represents the information to create a contact
 type CustomerParams struct {
 	Name         string `json:"contact_name"`
@@ -86,23 +90,38 @@ func (c *Contact) Endpoint() string {
 }
 
 // Create method will try to create a contact on razorpay
-func (c *Contact) Create(params *CustomerParams, client *Client) (Contact, error) {
+func (c *Contact) Create(params *CustomerParams, client *Client) (*Contact, error) {
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(c.Endpoint(), string(body))
 
 	respData, err := sendResp(resp, err, c)
 	if err != nil {
-		return *c, err
+		return c, err
 	}
-	return respData.Contact, err
+	return &respData.Contact, err
 }
 
 // FindOne tries to find the contact with given id
-func (c *Contact) FindOne(id string, client *Client) (Contact, error) {
+func (c *Contact) FindOne(id string, client *Client) (*Contact, error) {
 	resp, err := client.Get(c.Endpoint() + "/" + id)
 	respData, err := sendResp(resp, err, c)
 	if err != nil {
-		return *c, err
+		return c, err
 	}
-	return respData.Contact, err
+	return &respData.Contact, err
+}
+
+// FindOne tries to find the contact with given id
+func (c *Contact) FindAll(opts *CustomerFindOptions, client *Client) ([]Contact, error) {
+	resp, err := client.Get(c.Endpoint() + "?email_contains=" + opts.EmailContains)
+	respData, err := sendResp(resp, err, c)
+
+	var results []Contact
+	if err != nil {
+		return results, err
+	}
+	for _, ct := range respData.Contacts {
+		results = append(results, ct)
+	}
+	return results, err
 }
