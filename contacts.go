@@ -24,8 +24,8 @@ type Contact struct {
 	Notes        string `json:"notes"`
 
 	ContactPersons  []ContactPerson `json:"contact_persons"`
-	BillingAddress  billingAddress  `json:"billing_address"`
-	ShippingAddress billingAddress  `json:"shipping_address"`
+	BillingAddress  BillingAddress  `json:"billing_address"`
+	ShippingAddress BillingAddress  `json:"shipping_address"`
 
 	// possible values ---> vat_registered,vat_not_registered,gcc_vat_not_registered,gcc_vat_registered,non_gcc,dz_vat_registered and dz_vat_not_registered.
 	TaxTreatment string `json:"tax_treatment"`
@@ -38,7 +38,7 @@ type Contact struct {
 	LastModifiedTime string `json:"last_modified_time"`
 }
 
-type billingAddress struct {
+type BillingAddress struct {
 	Attention string `json:"attention"`
 	Address   string `json:"address"`
 	Street2   string `json:"street2"`
@@ -61,8 +61,8 @@ type CustomerParams struct {
 	Notes        string `json:"notes,omitempty"`
 
 	ContactPersons  []ContactPerson `json:"contact_persons"`
-	BillingAddress  billingAddress  `json:"billing_address,omitempty"`
-	ShippingAddress billingAddress  `json:"shipping_address,omitempty"`
+	BillingAddress  BillingAddress  `json:"billing_address,omitempty"`
+	ShippingAddress BillingAddress  `json:"shipping_address,omitempty"`
 
 	// possible values ---> vat_registered,vat_not_registered,gcc_vat_not_registered,gcc_vat_registered,non_gcc,dz_vat_registered and dz_vat_not_registered.
 	TaxTreatment string `json:"tax_treatment,omitempty"`
