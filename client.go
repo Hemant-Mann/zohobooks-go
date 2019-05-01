@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -73,6 +74,9 @@ func readBody(resp *http.Response) ([]byte, error) {
 }
 
 func (c *Client) getURL(path string) string {
+	if strings.Contains(path, "?") {
+		return BaseURL + path + "&organization_id=" + c.OrgID
+	}
 	return BaseURL + path + "?organization_id=" + c.OrgID
 }
 

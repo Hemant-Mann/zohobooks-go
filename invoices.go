@@ -71,25 +71,33 @@ type lineItem struct {
 // InvoiceParams struct represents the information to create a invoice
 type InvoiceParams struct {
 	CustomerID     string   `json:"customer_id"`
-	ContactPersons []string `json:"contact_persons"`
-	InvoiceNumber  string   `json:"invoice_number"`
-	PlaceOfSupply  string   `json:"place_of_supply"`
+	ContactPersons []string `json:"contact_persons,omitempty"`
+	InvoiceNumber  string   `json:"invoice_number,omitempty"`
+	PlaceOfSupply  string   `json:"place_of_supply,omitempty"`
 
 	// possible values ---> vat_registered,vat_not_registered,gcc_vat_not_registered,gcc_vat_registered,non_gcc,dz_vat_registered and dz_vat_not_registered.
-	TaxTreatment string `json:"tax_treatment"`
-	GstNO        string `json:"gst_no"`        // 15 digit
-	GstTreatment string `json:"gst_treatment"` // Allowed values are business_gst , business_none , overseas , consumer
+	TaxTreatment string `json:"tax_treatment,omitempty"`
+	GstNO        string `json:"gst_no,omitempty"`        // 15 digit
+	GstTreatment string `json:"gst_treatment,omitempty"` // Allowed values are business_gst , business_none , overseas , consumer
 
-	Date              string     `json:"date"`
-	PaymentTerms      string     `json:"payment_terms"`
-	PaymentTermsLabel string     `json:"payment_terms_label"`
-	DueDate           string     `json:"due_date"`
-	Discount          string     `json:"discount"`
-	TaxID             string     `json:"tax_id"`
-	RefNo             string     `json:"reference_number"`
+	Date              string     `json:"date,omitempty"`
+	PaymentTerms      string     `json:"payment_terms,omitempty"`
+	PaymentTermsLabel string     `json:"payment_terms_label,omitempty"`
+	DueDate           string     `json:"due_date,omitempty"`
+	Discount          string     `json:"discount,omitempty"`
+	TaxID             string     `json:"tax_id,omitempty"`
+	RefNo             string     `json:"reference_number,omitempty"`
 	LineItems         []lineItem `json:"line_items"`
-	Notes             string     `json:"notes"`
-	Terms             string     `json:"terms"`
+	Notes             string     `json:"notes,omitempty"`
+	Terms             string     `json:"terms,omitempty"`
+}
+
+type InvoiceEmailParams struct {
+	SendFromOrgEmail bool     `json:"send_from_org_email_id"`
+	ToMailIDs        []string `json:"to_mail_ids"`
+	CCMailIDs        []string `json:"cc_mail_ids,omitempty"`
+	Subject          string   `json:"subject,omitempty"`
+	Body             string   `json:"body,omitempty"`
 }
 
 // New method will create a invoice object and return a pointer to it
@@ -123,4 +131,11 @@ func (i *Invoice) FindOne(id string, client *Client) (Invoice, error) {
 		return *i, err
 	}
 	return respData.Invoice, err
+}
+
+func (i *Invoice) Email(id string, params *InvoiceEmailParams, client *Client) {
+	var body, _ = json.Marshal(params)
+	resp, err := client.Post(i.Endpoint()+"/"+id+"/email?send_attachment=true", string(body))
+
+	sendResp(resp, err, i)
 }
