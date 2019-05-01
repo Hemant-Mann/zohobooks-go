@@ -1,12 +1,17 @@
 package zohobooks
 
+import (
+	"encoding/json"
+)
+
 type invoiceInfo struct {
-	ID            string  `json:"invoice_id"`
-	Number        string  `json:"invoice_number"`
-	Date          string  `json:"date"`
-	Amount        float64 `json:"invoice_amount"`
-	AmountApplied float64 `json:"amount_applied"`
-	BalanceAmount float64 `json:"balance_amount"`
+	InvoiceID         string  `json:"invoice_id"`
+	Number            string  `json:"invoice_number,omitempty"`
+	Date              string  `json:"date,omitempty"`
+	Amount            float64 `json:"invoice_amount,omitempty"`
+	AmountApplied     float64 `json:"amount_applied"`
+	BalanceAmount     float64 `json:"balance_amount,omitempty"`
+	TaxAmountWithheld float64 `json:"tax_amount_withheld,omitempty"`
 }
 
 type Payment struct {
@@ -27,6 +32,20 @@ type Payment struct {
 	CurrencySymbol string        `json:"currency_symbol"`
 }
 
+type PaymentParams struct {
+	CustomerID  string  `json:"customer_id"`
+	Mode        string  `json:"payment_mode"` // This can be check, cash, creditcard, banktransfer, bankremittance, autotransaction or others
+	Amount      float64 `json:"amount"`
+	Date        string  `json:"date"`
+	RefNo       string  `json:"reference_number,omitempty"`
+	Description string  `json:"description,omitempty"`
+
+	Invoices       []invoiceInfo `json:"invoices"`
+	BankCharges    float64       `json:"bank_charges"`
+	AccountID      string        `json:"account_id,omitempty"`
+	ContactPersons []string      `json:"contact_persons,omitempty"`
+}
+
 // New method will create a payment object and return a pointer to it
 func (p *Payment) New() Resource {
 	var obj = &Payment{}
@@ -36,4 +55,26 @@ func (p *Payment) New() Resource {
 // Endpoint method returns the endpoint of the resource
 func (p *Payment) Endpoint() string {
 	return "/customerpayments"
+}
+
+// Create method will try to create a contact on razorpay
+func (p *Payment) Create(params *PaymentParams, client *Client) (*Payment, error) {
+	var body, _ = json.Marshal(params)
+	resp, err := client.Post(p.Endpoint(), string(body))
+
+	respData, err := sendResp(resp, err, p)
+	if err != nil {
+		return p, err
+	}
+	return &respData.Payment, err
+}
+
+// FindOne tries to find the contact with given id
+func (p *Payment) FindOne(id string, client *Client) (*Payment, error) {
+	resp, err := client.Get(p.Endpoint() + "/" + id)
+	respData, err := sendResp(resp, err, p)
+	if err != nil {
+		return p, err
+	}
+	return &respData.Payment, err
 }
