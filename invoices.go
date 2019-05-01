@@ -11,8 +11,8 @@ const TaxIGST = "IGST"
 const TaxIGST18 = "IGST18"
 
 type taxInfo struct {
-	TaxName   string `json:"tax_name"`
-	TaxAmount string `json:"tax_amount"`
+	TaxName   string  `json:"tax_name"`
+	TaxAmount float64 `json:"tax_amount"`
 }
 
 // Invoice struct represents the information of the invoice
@@ -66,9 +66,9 @@ type LineItem struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Rate        float64 `json:"rate"`
-	Quantity    int     `json:"quantity"`
+	Quantity    float64 `json:"quantity"`
 	Unit        string  `json:"unit,omitempty"`
-	TaxID       int64   `json:"tax_id,omitempty"`
+	TaxID       string  `json:"tax_id,omitempty"`
 	TaxName     string  `json:"tax_name,omitempty"`
 	TaxType     string  `json:"tax_type,omitempty"`
 	TaxPercent  float64 `json:"tax_percentage,omitempty"`
