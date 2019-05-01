@@ -13,9 +13,20 @@ const BaseURL = "https://books.zoho.com/api/v3"
 
 // Client struct
 type Client struct {
-	Key string
+	Key   string
+	OrgID string
 
 	httpClient *http.Client
+}
+
+type ResponseStruct struct {
+	Contact Contact `json:"contact"`
+}
+
+type Response struct {
+	Code    int            `json:"int"`
+	Message string         `json:"message"`
+	Contact ResponseStruct `json:"contact"`
 }
 
 // Resource interface is to be used for generic decoding of object
@@ -25,9 +36,10 @@ type Resource interface {
 }
 
 // NewClient returns a pointer to the zohobooks client
-func NewClient(key string) *Client {
+func NewClient(key, orgID string) *Client {
 	var c = &Client{
-		Key: key,
+		Key:   key,
+		OrgID: orgID,
 	}
 	c.httpClient = getHTTPClient(10)
 	return c
@@ -40,17 +52,17 @@ func getHTTPClient(timeout int) *http.Client {
 	return httpClient
 }
 
-func sendResp(resp *http.Response, err error, rs Resource) (Resource, error) {
-	var newResource = rs.New()
+func sendResp(resp *http.Response, err error, rs Resource) (*Response, error) {
+	var newResp = &Response{}
 	if err != nil {
-		return newResource, err
+		return newResp, err
 	}
 	body, readErr := readBody(resp)
 	if readErr != nil {
-		return newResource, readErr
+		return newResp, readErr
 	}
-	parseError := json.Unmarshal(body, newResource)
-	return newResource, parseError
+	parseError := json.Unmarshal(body, newResp)
+	return newResp, parseError
 }
 
 func readBody(resp *http.Response) ([]byte, error) {
@@ -64,7 +76,7 @@ func readBody(resp *http.Response) ([]byte, error) {
 }
 
 func (c *Client) getURL(path string) string {
-	return BaseURL + path
+	return BaseURL + path + "?organization_id=" + c.OrgID
 }
 
 func (c *Client) makeRequest(method, path string, body *bytes.Buffer, headers map[string]string) (*http.Response, error) {
