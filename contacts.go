@@ -6,6 +6,7 @@ import (
 
 // Contact struct represents the information of the contact
 type Contact struct {
+	ID           string `json:"contact_id"`
 	Name         string `json:"contact_name"`
 	Company      string `json:"company_name"`
 	Website      string `json:"website"`

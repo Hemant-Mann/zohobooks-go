@@ -23,6 +23,7 @@ type Response struct {
 	Code    int     `json:"int"`
 	Message string  `json:"message"`
 	Contact Contact `json:"contact"`
+	Invoice Invoice `json:"invoice"`
 }
 
 // Resource interface is to be used for generic decoding of object
