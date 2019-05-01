@@ -21,7 +21,7 @@ type Contact struct {
 	GstNO        string `json:"gst_no"`        // 15 digit
 	GstTreatment string `json:"gst_treatment"` // Allowed values are business_gst , business_none , overseas , consumer
 	TaxID        string `json:"tax_id"`
-	IsTaxable    string `json:"is_taxable"`
+	IsTaxable    bool   `json:"is_taxable"`
 	CreatedTime  string `json:"created_time"`
 
 	LastModifiedTime string `json:"last_modified_time"`
@@ -57,7 +57,7 @@ type CustomerParams struct {
 	GstNO        string `json:"gst_no"`        // 15 digit
 	GstTreatment string `json:"gst_treatment"` // Allowed values are business_gst , business_none , overseas , consumer
 	TaxID        string `json:"tax_id"`
-	IsTaxable    string `json:"is_taxable"`
+	IsTaxable    bool   `json:"is_taxable"`
 }
 
 // New method will create a contact object and return a pointer to it
@@ -80,7 +80,7 @@ func (c *Contact) Create(params *CustomerParams, client *Client) (Contact, error
 	if err != nil {
 		return *c, err
 	}
-	return respData.Contact.Contact, err
+	return respData.Contact, err
 }
 
 // FindOne tries to find the contact with given id
@@ -90,5 +90,5 @@ func (c *Contact) FindOne(id string, client *Client) (Contact, error) {
 	if err != nil {
 		return *c, err
 	}
-	return respData.Contact.Contact, err
+	return respData.Contact, err
 }

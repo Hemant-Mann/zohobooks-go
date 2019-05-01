@@ -19,14 +19,10 @@ type Client struct {
 	httpClient *http.Client
 }
 
-type ResponseStruct struct {
-	Contact Contact `json:"contact"`
-}
-
 type Response struct {
-	Code    int            `json:"int"`
-	Message string         `json:"message"`
-	Contact ResponseStruct `json:"contact"`
+	Code    int     `json:"int"`
+	Message string  `json:"message"`
+	Contact Contact `json:"contact"`
 }
 
 // Resource interface is to be used for generic decoding of object
@@ -86,14 +82,14 @@ func (c *Client) makeRequest(method, path string, body *bytes.Buffer, headers ma
 			req.Header.Set(k, v)
 		}
 	}
-	req.Header.Set("Authorization", "Zoho-oauthtoken "+c.Key)
+	req.Header.Set("Authorization", "Zoho-authtoken "+c.Key)
 	resp, err := c.httpClient.Do(req)
 	return resp, err
 }
 
 // Get method makes a GET request to the resource
 func (c *Client) Get(path string) (*http.Response, error) {
-	return c.makeRequest("GET", path, nil, nil)
+	return c.makeRequest("GET", path, bytes.NewBuffer([]byte("")), nil)
 }
 
 // Post method makes a POST and sends data in json format
@@ -107,5 +103,5 @@ func (c *Client) Post(path string, body string) (*http.Response, error) {
 
 // Delete method makes a DELETE request to the resource
 func (c *Client) Delete(path string) (*http.Response, error) {
-	return c.makeRequest("DELETE", path, nil, nil)
+	return c.makeRequest("DELETE", path, bytes.NewBuffer([]byte("")), nil)
 }
