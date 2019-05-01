@@ -33,7 +33,6 @@ type Contact struct {
 	GstNO        string `json:"gst_no"`        // 15 digit
 	GstTreatment string `json:"gst_treatment"` // Allowed values are business_gst , business_none , overseas , consumer
 	TaxID        string `json:"tax_id"`
-	IsTaxable    bool   `json:"is_taxable"`
 	CreatedTime  string `json:"created_time"`
 
 	LastModifiedTime string `json:"last_modified_time"`
@@ -75,7 +74,6 @@ type CustomerParams struct {
 	GstNO        string `json:"gst_no,omitempty"`        // 15 digit
 	GstTreatment string `json:"gst_treatment,omitempty"` // Allowed values are business_gst , business_none , overseas , consumer
 	TaxID        string `json:"tax_id,omitempty"`
-	IsTaxable    bool   `json:"is_taxable"`
 }
 
 // New method will create a contact object and return a pointer to it
