@@ -36,7 +36,7 @@ type Invoice struct {
 	DueDate           string     `json:"due_date"`
 	CurrencyCode      string     `json:"currency_code"`
 	CurrencyID        string     `json:"currency_id"`
-	Discount          string     `json:"discount"`
+	Discount          float64    `json:"discount"`
 	TaxID             string     `json:"tax_id"`
 	RefNo             string     `json:"reference_number"`
 	LineItems         []LineItem `json:"line_items"`
@@ -60,18 +60,18 @@ type Invoice struct {
 }
 
 type LineItem struct {
-	ItemID      string  `json:"item_id"`
-	ProjectID   string  `json:"project_id"`
-	ProductType string  `json:"product_type"`
+	ItemID      string  `json:"item_id,omitempty"`
+	ProjectID   string  `json:"project_id,omitempty"`
+	ProductType string  `json:"product_type,omitempty"`
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Rate        float64 `json:"rate"`
 	Quantity    int     `json:"quantity"`
-	Unit        string  `json:"unit"`
-	TaxID       int64   `json:"tax_id"`
-	TaxName     string  `json:"tax_name"`
-	TaxType     string  `json:"tax_type"`
-	TaxPercent  float64 `json:"tax_percentage"`
+	Unit        string  `json:"unit,omitempty"`
+	TaxID       int64   `json:"tax_id,omitempty"`
+	TaxName     string  `json:"tax_name,omitempty"`
+	TaxType     string  `json:"tax_type,omitempty"`
+	TaxPercent  float64 `json:"tax_percentage,omitempty"`
 }
 
 // InvoiceParams struct represents the information to create a invoice
@@ -90,7 +90,7 @@ type InvoiceParams struct {
 	PaymentTerms      int        `json:"payment_terms,omitempty"`
 	PaymentTermsLabel string     `json:"payment_terms_label,omitempty"`
 	DueDate           string     `json:"due_date,omitempty"`
-	Discount          string     `json:"discount,omitempty"`
+	Discount          float64    `json:"discount,omitempty"`
 	TaxID             string     `json:"tax_id,omitempty"`
 	RefNo             string     `json:"reference_number,omitempty"`
 	LineItems         []LineItem `json:"line_items"`

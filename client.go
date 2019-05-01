@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -105,8 +106,10 @@ func (c *Client) Post(path string, body string) (*http.Response, error) {
 	headers := map[string]string{
 		"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
 	}
-	var postBody = "JSONString=\"" + body + "\""
-	return c.makeRequest("POST", path, bytes.NewBuffer([]byte(postBody)), headers)
+	data := url.Values{}
+	data.Set("JSONString", body)
+	byteBody := []byte(data.Encode())
+	return c.makeRequest("POST", path, bytes.NewBuffer(byteBody), headers)
 }
 
 // Delete method makes a DELETE request to the resource
