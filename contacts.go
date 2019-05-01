@@ -22,6 +22,7 @@ type Contact struct {
 	LanguageCode string `json:"language_code"`
 	ContactType  string `json:"contact_type"`
 	Notes        string `json:"notes"`
+	CurrencyID   string `json:"currency_id"`
 
 	ContactPersons  []ContactPerson `json:"contact_persons"`
 	BillingAddress  BillingAddress  `json:"billing_address"`
@@ -59,6 +60,7 @@ type CustomerParams struct {
 	LanguageCode string `json:"language_code,omitempty"`
 	ContactType  string `json:"contact_type,omitempty"`
 	Notes        string `json:"notes,omitempty"`
+	CurrencyID   string `json:"currency_id"`
 
 	ContactPersons  []ContactPerson `json:"contact_persons"`
 	BillingAddress  BillingAddress  `json:"billing_address,omitempty"`

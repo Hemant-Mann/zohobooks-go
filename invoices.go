@@ -29,7 +29,7 @@ type Invoice struct {
 	PaymentTermsLabel string     `json:"payment_terms_label"`
 	DueDate           string     `json:"due_date"`
 	CurrencyCode      string     `json:"currency_code"`
-	CurrencyID        int64      `json:"currency_id"`
+	CurrencyID        string     `json:"currency_id"`
 	Discount          string     `json:"discount"`
 	TaxID             string     `json:"tax_id"`
 	RefNo             string     `json:"reference_number"`
