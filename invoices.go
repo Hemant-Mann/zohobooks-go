@@ -4,6 +4,12 @@ import (
 	"encoding/json"
 )
 
+// TaxIGST name of tax type
+const TaxIGST = "IGST"
+
+// TaxIGST18 name of the tax
+const TaxIGST18 = "IGST18"
+
 type taxInfo struct {
 	TaxName   string `json:"tax_name"`
 	TaxAmount string `json:"tax_amount"`
@@ -25,7 +31,7 @@ type Invoice struct {
 
 	Status            string     `json:"status"`
 	Date              string     `json:"date"`
-	PaymentTerms      string     `json:"payment_terms"`
+	PaymentTerms      int        `json:"payment_terms"`
 	PaymentTermsLabel string     `json:"payment_terms_label"`
 	DueDate           string     `json:"due_date"`
 	CurrencyCode      string     `json:"currency_code"`
@@ -33,7 +39,7 @@ type Invoice struct {
 	Discount          string     `json:"discount"`
 	TaxID             string     `json:"tax_id"`
 	RefNo             string     `json:"reference_number"`
-	LineItems         []lineItem `json:"line_items"`
+	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes"`
 	Terms             string     `json:"terms"`
 
@@ -53,14 +59,14 @@ type Invoice struct {
 	InvoiceURL        string  `json:"invoice_url"`
 }
 
-type lineItem struct {
+type LineItem struct {
 	ItemID      string  `json:"item_id"`
 	ProjectID   string  `json:"project_id"`
 	ProductType string  `json:"product_type"`
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Rate        float64 `json:"rate"`
-	Quantity    int64   `json:"quantity"`
+	Quantity    int     `json:"quantity"`
 	Unit        string  `json:"unit"`
 	TaxID       int64   `json:"tax_id"`
 	TaxName     string  `json:"tax_name"`
@@ -81,13 +87,13 @@ type InvoiceParams struct {
 	GstTreatment string `json:"gst_treatment,omitempty"` // Allowed values are business_gst , business_none , overseas , consumer
 
 	Date              string     `json:"date,omitempty"`
-	PaymentTerms      string     `json:"payment_terms,omitempty"`
+	PaymentTerms      int        `json:"payment_terms,omitempty"`
 	PaymentTermsLabel string     `json:"payment_terms_label,omitempty"`
 	DueDate           string     `json:"due_date,omitempty"`
 	Discount          string     `json:"discount,omitempty"`
 	TaxID             string     `json:"tax_id,omitempty"`
 	RefNo             string     `json:"reference_number,omitempty"`
-	LineItems         []lineItem `json:"line_items"`
+	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes,omitempty"`
 	Terms             string     `json:"terms,omitempty"`
 }

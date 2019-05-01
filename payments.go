@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-type invoiceInfo struct {
+type InvoiceInfo struct {
 	InvoiceID         string  `json:"invoice_id"`
 	Number            string  `json:"invoice_number,omitempty"`
 	Date              string  `json:"date,omitempty"`
@@ -27,7 +27,7 @@ type Payment struct {
 	CustomerID     string        `json:"customer_id"`
 	CustomerName   string        `json:"customer_name"`
 	Email          string        `json:"email"`
-	Invoices       []invoiceInfo `json:"invoices"`
+	Invoices       []InvoiceInfo `json:"invoices"`
 	CurrencyCode   string        `json:"currency_code"`
 	CurrencySymbol string        `json:"currency_symbol"`
 }
@@ -40,7 +40,7 @@ type PaymentParams struct {
 	RefNo       string  `json:"reference_number,omitempty"`
 	Description string  `json:"description,omitempty"`
 
-	Invoices       []invoiceInfo `json:"invoices"`
+	Invoices       []InvoiceInfo `json:"invoices"`
 	BankCharges    float64       `json:"bank_charges"`
 	AccountID      string        `json:"account_id,omitempty"`
 	ContactPersons []string      `json:"contact_persons,omitempty"`
