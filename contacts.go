@@ -44,20 +44,20 @@ type billingAddress struct {
 // CustomerParams struct represents the information to create a contact
 type CustomerParams struct {
 	Name         string `json:"contact_name"`
-	Company      string `json:"company_name"`
-	Website      string `json:"website"`
-	LanguageCode string `json:"language_code"`
-	ContactType  string `json:"contact_type"`
-	Notes        string `json:"notes"`
+	Company      string `json:"company_name,omitempty"`
+	Website      string `json:"website,omitempty"`
+	LanguageCode string `json:"language_code,omitempty"`
+	ContactType  string `json:"contact_type,omitempty"`
+	Notes        string `json:"notes,omitempty"`
 
-	BillingAddress  billingAddress `json:"billing_address"`
-	ShippingAddress billingAddress `json:"shipping_address"`
+	BillingAddress  billingAddress `json:"billing_address,omitempty"`
+	ShippingAddress billingAddress `json:"shipping_address,omitempty"`
 
 	// possible values ---> vat_registered,vat_not_registered,gcc_vat_not_registered,gcc_vat_registered,non_gcc,dz_vat_registered and dz_vat_not_registered.
-	TaxTreatment string `json:"tax_treatment"`
-	GstNO        string `json:"gst_no"`        // 15 digit
-	GstTreatment string `json:"gst_treatment"` // Allowed values are business_gst , business_none , overseas , consumer
-	TaxID        string `json:"tax_id"`
+	TaxTreatment string `json:"tax_treatment,omitempty"`
+	GstNO        string `json:"gst_no,omitempty"`        // 15 digit
+	GstTreatment string `json:"gst_treatment,omitempty"` // Allowed values are business_gst , business_none , overseas , consumer
+	TaxID        string `json:"tax_id,omitempty"`
 	IsTaxable    bool   `json:"is_taxable"`
 }
 
