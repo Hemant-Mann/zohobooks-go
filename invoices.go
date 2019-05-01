@@ -112,25 +112,25 @@ func (i *Invoice) Endpoint() string {
 }
 
 // Create method will try to create a invoice on razorpay
-func (i *Invoice) Create(params *InvoiceParams, client *Client) (Invoice, error) {
+func (i *Invoice) Create(params *InvoiceParams, client *Client) (*Invoice, error) {
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(i.Endpoint(), string(body))
 
 	respData, err := sendResp(resp, err, i)
 	if err != nil {
-		return *i, err
+		return i, err
 	}
-	return respData.Invoice, err
+	return &respData.Invoice, err
 }
 
 // FindOne tries to find the invoice with given id
-func (i *Invoice) FindOne(id string, client *Client) (Invoice, error) {
+func (i *Invoice) FindOne(id string, client *Client) (*Invoice, error) {
 	resp, err := client.Get(i.Endpoint() + "/" + id)
 	respData, err := sendResp(resp, err, i)
 	if err != nil {
-		return *i, err
+		return i, err
 	}
-	return respData.Invoice, err
+	return &respData.Invoice, err
 }
 
 func (i *Invoice) Email(id string, params *InvoiceEmailParams, client *Client) {
