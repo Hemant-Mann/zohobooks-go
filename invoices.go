@@ -129,6 +129,18 @@ func (i *Invoice) Create(params *InvoiceParams, client *Client) (*Invoice, error
 	return &respData.Invoice, err
 }
 
+// Update method will try to update a invoice on razorpay
+func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Invoice, error) {
+	var body, _ = json.Marshal(params)
+	resp, err := client.Put(i.Endpoint()+"/"+id, string(body))
+
+	respData, err := sendResp(resp, err, i)
+	if err != nil {
+		return i, err
+	}
+	return &respData.Invoice, err
+}
+
 // FindOne tries to find the invoice with given id
 func (i *Invoice) FindOne(id string, client *Client) (*Invoice, error) {
 	resp, err := client.Get(i.Endpoint() + "/" + id)

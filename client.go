@@ -112,6 +112,17 @@ func (c *Client) Post(path string, body string) (*http.Response, error) {
 	return c.makeRequest("POST", path, bytes.NewBuffer(byteBody), headers)
 }
 
+// Put method makes a PUT and sends data in json format
+func (c *Client) Put(path string, body string) (*http.Response, error) {
+	headers := map[string]string{
+		"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+	}
+	data := url.Values{}
+	data.Set("JSONString", body)
+	byteBody := []byte(data.Encode())
+	return c.makeRequest("PUT", path, bytes.NewBuffer(byteBody), headers)
+}
+
 // Delete method makes a DELETE request to the resource
 func (c *Client) Delete(path string) (*http.Response, error) {
 	return c.makeRequest("DELETE", path, bytes.NewBuffer([]byte("")), nil)
