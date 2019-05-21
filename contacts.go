@@ -51,7 +51,7 @@ type BillingAddress struct {
 	Phone     string `json:"phone"`
 }
 
-type CustomerFindOptions struct {
+type ContactFindOptions struct {
 	EmailContains string
 }
 
@@ -110,7 +110,7 @@ func (c *Contact) FindOne(id string, client *Client) (*Contact, error) {
 }
 
 // FindOne tries to find the contact with given id
-func (c *Contact) FindAll(opts *CustomerFindOptions, client *Client) ([]Contact, error) {
+func (c *Contact) FindAll(opts *ContactFindOptions, client *Client) ([]Contact, error) {
 	resp, err := client.Get(c.Endpoint() + "?email_contains=" + opts.EmailContains)
 	respData, err := sendResp(resp, err, c)
 
