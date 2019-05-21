@@ -55,8 +55,8 @@ type CustomerFindOptions struct {
 	EmailContains string
 }
 
-// CustomerParams struct represents the information to create a contact
-type CustomerParams struct {
+// ContactParams struct represents the information to create a contact
+type ContactParams struct {
 	Name         string `json:"contact_name"`
 	Company      string `json:"company_name,omitempty"`
 	Website      string `json:"website,omitempty"`
@@ -88,7 +88,7 @@ func (c *Contact) Endpoint() string {
 }
 
 // Create method will try to create a contact on razorpay
-func (c *Contact) Create(params *CustomerParams, client *Client) (*Contact, error) {
+func (c *Contact) Create(params *ContactParams, client *Client) (*Contact, error) {
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(c.Endpoint(), string(body))
 
