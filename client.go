@@ -3,6 +3,7 @@ package zohobooks
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -21,8 +22,9 @@ type Client struct {
 	httpClient *http.Client
 }
 
+// Response struct to handle zohobooks response
 type Response struct {
-	Code    int     `json:"int"`
+	Code    int     `json:"code"`
 	Message string  `json:"message"`
 	Contact Contact `json:"contact"`
 	Invoice Invoice `json:"invoice"`
@@ -64,6 +66,9 @@ func sendResp(resp *http.Response, err error, rs Resource) (*Response, error) {
 		return newResp, readErr
 	}
 	parseError := json.Unmarshal(body, newResp)
+	if parseError == nil && newResp.Code > 0 {
+		return newResp, errors.New(newResp.Message)
+	}
 	return newResp, parseError
 }
 
