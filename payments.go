@@ -2,6 +2,7 @@ package zohobooks
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 type InvoiceInfo struct {
@@ -77,4 +78,17 @@ func (p *Payment) FindOne(id string, client *Client) (*Payment, error) {
 		return p, err
 	}
 	return &respData.Payment, err
+}
+
+// Delete tries to delete the payment with given id
+func (p *Payment) Delete(id string, client *Client) error {
+	resp, err := client.Get(p.Endpoint() + "/" + id)
+	respData, err := sendResp(resp, err, p)
+	if err != nil {
+		return err
+	}
+	if respData.Code == 0 {
+		return nil
+	}
+	return errors.New(respData.Message)
 }

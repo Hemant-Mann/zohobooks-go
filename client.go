@@ -125,5 +125,8 @@ func (c *Client) Put(path string, body string) (*http.Response, error) {
 
 // Delete method makes a DELETE request to the resource
 func (c *Client) Delete(path string) (*http.Response, error) {
-	return c.makeRequest("DELETE", path, bytes.NewBuffer([]byte("")), nil)
+	headers := map[string]string{
+		"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+	}
+	return c.makeRequest("DELETE", path, bytes.NewBuffer([]byte("")), headers)
 }
