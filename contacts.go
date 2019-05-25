@@ -109,7 +109,7 @@ func (c *Contact) FindOne(id string, client *Client) (*Contact, error) {
 	return &respData.Contact, err
 }
 
-// FindOne tries to find the contact with given id
+// FindAll tries to find the contacts with given options
 func (c *Contact) FindAll(opts *ContactFindOptions, client *Client) ([]Contact, error) {
 	resp, err := client.Get(c.Endpoint() + "?email_contains=" + opts.EmailContains)
 	respData, err := sendResp(resp, err, c)

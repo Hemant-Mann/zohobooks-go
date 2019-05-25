@@ -30,7 +30,8 @@ type Response struct {
 	Invoice Invoice `json:"invoice"`
 	Payment Payment `json:"payment"`
 
-	Contacts []Contact `json:"contacts"`
+	Contacts   []Contact  `json:"contacts"`
+	Currencies []Currency `json:"currencies"`
 }
 
 // Resource interface is to be used for generic decoding of object
