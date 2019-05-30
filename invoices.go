@@ -94,11 +94,13 @@ type InvoiceParams struct {
 	Discount          float64    `json:"discount,omitempty"`
 	TaxID             string     `json:"tax_id,omitempty"`
 	RefNo             string     `json:"reference_number,omitempty"`
+	Reason            string     `json:"reason,omitempty"` // required when updating sent invoice
 	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes,omitempty"`
 	Terms             string     `json:"terms,omitempty"`
 }
 
+// InvoiceEmailParams struct contains the parameters to be used while sending invoices
 type InvoiceEmailParams struct {
 	SendFromOrgEmail bool     `json:"send_from_org_email_id"`
 	ToMailIDs        []string `json:"to_mail_ids"`
