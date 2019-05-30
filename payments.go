@@ -82,7 +82,7 @@ func (p *Payment) FindOne(id string, client *Client) (*Payment, error) {
 
 // Delete tries to delete the payment with given id
 func (p *Payment) Delete(id string, client *Client) error {
-	resp, err := client.Get(p.Endpoint() + "/" + id)
+	resp, err := client.Delete(p.Endpoint() + "/" + id)
 	respData, err := sendResp(resp, err, p)
 	if err != nil {
 		return err
