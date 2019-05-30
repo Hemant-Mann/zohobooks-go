@@ -16,9 +16,9 @@ const BaseURL = "https://books.zoho.com/api/v3"
 
 // Client struct
 type Client struct {
-	Key   string
-	OrgID string
-
+	Key        string
+	OrgID      string
+	Datacenter string
 	httpClient *http.Client
 }
 
@@ -41,13 +41,24 @@ type Resource interface {
 }
 
 // NewClient returns a pointer to the zohobooks client
-func NewClient(key, orgID string) *Client {
+func NewClient(key, orgID, datacenter string) *Client {
 	var c = &Client{
 		Key:   key,
 		OrgID: orgID,
+
+		Datacenter: datacenter,
 	}
 	c.httpClient = getHTTPClient(10)
 	return c
+}
+
+// GetBaseURL will return the base URL for zohobooks based on the specified
+// datacenter while initializing the client
+func (c *Client) GetBaseURL() string {
+	if c.Datacenter == "in" || c.Datacenter == "IN" {
+		return "https://books.zoho.in/api/v3"
+	}
+	return "https://books.zoho.com/api/v3"
 }
 
 func getHTTPClient(timeout int) *http.Client {
@@ -84,10 +95,11 @@ func readBody(resp *http.Response) ([]byte, error) {
 }
 
 func (c *Client) getURL(path string) string {
+	var baseURL = c.GetBaseURL()
 	if strings.Contains(path, "?") {
-		return BaseURL + path + "&organization_id=" + c.OrgID
+		return baseURL + path + "&organization_id=" + c.OrgID
 	}
-	return BaseURL + path + "?organization_id=" + c.OrgID
+	return baseURL + path + "?organization_id=" + c.OrgID
 }
 
 func (c *Client) makeRequest(method, path string, body *bytes.Buffer, headers map[string]string) (*http.Response, error) {
