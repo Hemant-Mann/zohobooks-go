@@ -90,6 +90,7 @@ type InvoiceParams struct {
 	PaymentTerms      int        `json:"payment_terms,omitempty"`
 	PaymentTermsLabel string     `json:"payment_terms_label,omitempty"`
 	DueDate           string     `json:"due_date,omitempty"`
+	IsInclusiveTax    bool       `json:"is_inclusive_tax"`
 	Discount          float64    `json:"discount,omitempty"`
 	TaxID             string     `json:"tax_id,omitempty"`
 	RefNo             string     `json:"reference_number,omitempty"`
