@@ -2,6 +2,7 @@ package zohobooks
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 type ContactPerson struct {
@@ -134,4 +135,17 @@ func (c *Contact) Update(id string, params *ContactParams, client *Client) (*Con
 		return c, err
 	}
 	return &respData.Contact, err
+}
+
+// Delete tries to delete the contact with given id
+func (c *Contact) Delete(id string, client *Client) error {
+	resp, err := client.Delete(c.Endpoint() + "/" + id)
+	respData, err := sendResp(resp, err, c)
+	if err != nil {
+		return err
+	}
+	if respData.Code == 0 {
+		return nil
+	}
+	return errors.New(respData.Message)
 }
