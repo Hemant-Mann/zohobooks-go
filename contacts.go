@@ -123,3 +123,15 @@ func (c *Contact) FindAll(opts *ContactFindOptions, client *Client) ([]Contact, 
 	}
 	return results, err
 }
+
+// Update method will try to update a invoice on razorpay
+func (c *Contact) Update(id string, params *ContactParams, client *Client) (*Contact, error) {
+	var body, _ = json.Marshal(params)
+	resp, err := client.Put(c.Endpoint()+"/"+id, string(body))
+
+	respData, err := sendResp(resp, err, c)
+	if err != nil {
+		return c, err
+	}
+	return &respData.Contact, err
+}
