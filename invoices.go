@@ -2,6 +2,8 @@ package zohobooks
 
 import (
 	"encoding/json"
+	"io"
+	"os"
 )
 
 // TaxIGST name of tax type
@@ -154,9 +156,34 @@ func (i *Invoice) FindOne(id string, client *Client) (*Invoice, error) {
 	return &respData.Invoice, err
 }
 
+// Email method will send the invoice to the customer
 func (i *Invoice) Email(id string, params *InvoiceEmailParams, client *Client) {
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(i.Endpoint()+"/"+id+"/email?send_attachment=true", string(body))
 
 	sendResp(resp, err, i)
+}
+
+// DownloadPDF method will download the pdf to the given filepath
+func (i *Invoice) DownloadPDF(id, filepath string, client *Client) error {
+	// Create the file
+	f, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	// Get the data
+	resp, err := client.Get(i.Endpoint() + "/pdf?invoice_ids=" + id)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Writer the body to file
+	_, err = io.Copy(f, resp.Body)
+	if err != nil {
+		return err
+	}
+	return nil
 }
