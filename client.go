@@ -30,6 +30,8 @@ type Response struct {
 	Invoice Invoice `json:"invoice"`
 	Payment Payment `json:"payment"`
 
+	BankTransaction BankTransaction `json:"banktransaction"`
+
 	Contacts     []Contact     `json:"contacts"`
 	Currencies   []Currency    `json:"currencies"`
 	BankAccounts []BankAccount `json:"bankaccounts"`

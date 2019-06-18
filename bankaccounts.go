@@ -13,7 +13,7 @@ type BankAccountFindOptions struct {
 	FilterBy, SortColumn string
 }
 
-// New method will create a payment object and return a pointer to it
+// New method will create an object and return a pointer to it
 func (ba *BankAccount) New() Resource {
 	var obj = &BankAccount{}
 	return obj
