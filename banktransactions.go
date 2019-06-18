@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 )
 
+// TransactionTypeTransfer constant is a bank transaction type of "transfer_fund"
+const TransactionTypeTransfer = "transfer_fund"
+
 // BankTransaction struct will contain all the information of bank
 type BankTransaction struct {
 	ID          string  `json:"transaction_id"`
