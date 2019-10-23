@@ -65,6 +65,7 @@ type ContactParams struct {
 	ContactType  string `json:"contact_type,omitempty"`
 	Notes        string `json:"notes,omitempty"`
 	CurrencyID   string `json:"currency_id"`
+	OwnerID      string `json:"owner_id"`
 
 	ContactPersons  []ContactPerson `json:"contact_persons"`
 	BillingAddress  BillingAddress  `json:"billing_address,omitempty"`
