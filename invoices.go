@@ -61,6 +61,7 @@ type Invoice struct {
 	InvoiceURL        string  `json:"invoice_url"`
 }
 
+// LineItem struct contains info about the line items of the invoice
 type LineItem struct {
 	ItemID      string  `json:"item_id,omitempty"`
 	ProjectID   string  `json:"project_id,omitempty"`
@@ -71,6 +72,7 @@ type LineItem struct {
 	Quantity    float64 `json:"quantity"`
 	Unit        string  `json:"unit,omitempty"`
 	TaxID       string  `json:"tax_id,omitempty"`
+	HsnOrSac    string  `json:"hsn_or_sac,omitempty"`
 	TaxName     string  `json:"tax_name,omitempty"`
 	TaxType     string  `json:"tax_type,omitempty"`
 	TaxPercent  float64 `json:"tax_percentage,omitempty"`
