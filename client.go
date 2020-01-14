@@ -33,6 +33,7 @@ type Response struct {
 	BankTransaction BankTransaction `json:"banktransaction"`
 
 	Contacts     []Contact     `json:"contacts"`
+	Payments     []Payment     `json:"customer_payments"`
 	Currencies   []Currency    `json:"currencies"`
 	BankAccounts []BankAccount `json:"bankaccounts"`
 }

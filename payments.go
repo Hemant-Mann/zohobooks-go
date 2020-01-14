@@ -33,6 +33,10 @@ type Payment struct {
 	CurrencySymbol string        `json:"currency_symbol"`
 }
 
+type PaymentFindOptions struct {
+	CustomerID string
+}
+
 type PaymentParams struct {
 	CustomerID  string  `json:"customer_id"`
 	Mode        string  `json:"payment_mode"` // This can be check, cash, creditcard, banktransfer, bankremittance, autotransaction or others
@@ -91,4 +95,19 @@ func (p *Payment) Delete(id string, client *Client) error {
 		return nil
 	}
 	return errors.New(respData.Message)
+}
+
+// FindAll tries to find the payment with given options
+func (p *Payment) FindAll(opts *PaymentFindOptions, client *Client) ([]Payment, error) {
+	resp, err := client.Get(p.Endpoint())
+	respData, err := sendResp(resp, err, p)
+
+	var results []Payment
+	if err != nil {
+		return results, err
+	}
+	for _, pmt := range respData.Payments {
+		results = append(results, pmt)
+	}
+	return results, err
 }
