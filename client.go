@@ -107,6 +107,9 @@ func (c *Client) getURL(path string) string {
 }
 
 func (c *Client) makeRequest(method, path string, body *bytes.Buffer, headers map[string]string) (*http.Response, error) {
+	if len(c.Key) == 0 || len(c.OrgID) == 0 {
+		return nil, errors.New("Api Key and Org ID both are required params")
+	}
 	req, _ := http.NewRequest(method, c.getURL(path), body)
 	if headers != nil {
 		for k, v := range headers {
