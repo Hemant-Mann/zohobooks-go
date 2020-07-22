@@ -56,6 +56,18 @@ func NewClient(key, orgID, datacenter string) *Client {
 	return c
 }
 
+// NewClientWithTimeout returns a pointer to the zohobooks client
+func NewClientWithTimeout(key, orgID, datacenter string, timeout int) *Client {
+	var c = &Client{
+		Key:   key,
+		OrgID: orgID,
+
+		Datacenter: datacenter,
+	}
+	c.httpClient = getHTTPClient(timeout)
+	return c
+}
+
 // GetBaseURL will return the base URL for zohobooks based on the specified
 // datacenter while initializing the client
 func (c *Client) GetBaseURL() string {
