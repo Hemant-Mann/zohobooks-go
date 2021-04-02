@@ -48,6 +48,7 @@ type PaymentParams struct {
 	Invoices       []InvoiceInfo `json:"invoices"`
 	BankCharges    float64       `json:"bank_charges"`
 	AccountID      string        `json:"account_id,omitempty"`
+	TaxAccountID   string        `json:"tax_account_id,omitempty"`
 	ContactPersons []string      `json:"contact_persons,omitempty"`
 }
 
