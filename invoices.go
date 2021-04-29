@@ -83,6 +83,7 @@ type InvoiceParams struct {
 	CustomerID     string   `json:"customer_id"`
 	ContactPersons []string `json:"contact_persons,omitempty"`
 	InvoiceNumber  string   `json:"invoice_number,omitempty"`
+	ReferenceNo    string   `json:"reference_number,omitempty"`
 	PlaceOfSupply  string   `json:"place_of_supply,omitempty"`
 
 	// possible values ---> vat_registered,vat_not_registered,gcc_vat_not_registered,gcc_vat_registered,non_gcc,dz_vat_registered and dz_vat_not_registered.
