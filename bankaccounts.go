@@ -44,7 +44,7 @@ func (ba *BankAccount) findAllEndpoint(opts *BankAccountFindOptions) string {
 // FindAll tries to find the contacts with given options
 func (ba *BankAccount) FindAll(opts *BankAccountFindOptions, client *Client) ([]BankAccount, error) {
 	resp, err := client.Get(ba.findAllEndpoint(opts))
-	respData, err := sendResp(resp, err, ba)
+	respData, err := SendResp(resp, err, ba)
 
 	var results []BankAccount
 	if err != nil {

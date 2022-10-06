@@ -94,7 +94,7 @@ func (c *Contact) Create(params *ContactParams, client *Client) (*Contact, error
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(c.Endpoint(), string(body))
 
-	respData, err := sendResp(resp, err, c)
+	respData, err := SendResp(resp, err, c)
 	if err != nil {
 		return c, err
 	}
@@ -104,7 +104,7 @@ func (c *Contact) Create(params *ContactParams, client *Client) (*Contact, error
 // FindOne tries to find the contact with given id
 func (c *Contact) FindOne(id string, client *Client) (*Contact, error) {
 	resp, err := client.Get(c.Endpoint() + "/" + id)
-	respData, err := sendResp(resp, err, c)
+	respData, err := SendResp(resp, err, c)
 	if err != nil {
 		return c, err
 	}
@@ -114,7 +114,7 @@ func (c *Contact) FindOne(id string, client *Client) (*Contact, error) {
 // FindAll tries to find the contacts with given options
 func (c *Contact) FindAll(opts *ContactFindOptions, client *Client) ([]Contact, error) {
 	resp, err := client.Get(c.Endpoint() + "?email_contains=" + opts.EmailContains)
-	respData, err := sendResp(resp, err, c)
+	respData, err := SendResp(resp, err, c)
 
 	var results []Contact
 	if err != nil {
@@ -131,7 +131,7 @@ func (c *Contact) Update(id string, params *ContactParams, client *Client) (*Con
 	var body, _ = json.Marshal(params)
 	resp, err := client.Put(c.Endpoint()+"/"+id, string(body))
 
-	respData, err := sendResp(resp, err, c)
+	respData, err := SendResp(resp, err, c)
 	if err != nil {
 		return c, err
 	}
@@ -141,7 +141,7 @@ func (c *Contact) Update(id string, params *ContactParams, client *Client) (*Con
 // Delete tries to delete the contact with given id
 func (c *Contact) Delete(id string, client *Client) error {
 	resp, err := client.Delete(c.Endpoint() + "/" + id)
-	respData, err := sendResp(resp, err, c)
+	respData, err := SendResp(resp, err, c)
 	if err != nil {
 		return err
 	}

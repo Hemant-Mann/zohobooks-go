@@ -51,7 +51,7 @@ func (bt *BankTransaction) Create(params *BankTransactionParams, client *Client)
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(bt.Endpoint(), string(body))
 
-	respData, err := sendResp(resp, err, bt)
+	respData, err := SendResp(resp, err, bt)
 	if err != nil {
 		return bt, err
 	}

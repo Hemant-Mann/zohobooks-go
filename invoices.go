@@ -130,7 +130,7 @@ func (i *Invoice) Create(params *InvoiceParams, client *Client) (*Invoice, error
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(i.Endpoint(), string(body))
 
-	respData, err := sendResp(resp, err, i)
+	respData, err := SendResp(resp, err, i)
 	if err != nil {
 		return i, err
 	}
@@ -142,7 +142,7 @@ func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Inv
 	var body, _ = json.Marshal(params)
 	resp, err := client.Put(i.Endpoint()+"/"+id, string(body))
 
-	respData, err := sendResp(resp, err, i)
+	respData, err := SendResp(resp, err, i)
 	if err != nil {
 		return i, err
 	}
@@ -152,7 +152,7 @@ func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Inv
 // FindOne tries to find the invoice with given id
 func (i *Invoice) FindOne(id string, client *Client) (*Invoice, error) {
 	resp, err := client.Get(i.Endpoint() + "/" + id)
-	respData, err := sendResp(resp, err, i)
+	respData, err := SendResp(resp, err, i)
 	if err != nil {
 		return i, err
 	}
@@ -164,7 +164,7 @@ func (i *Invoice) Email(id string, params *InvoiceEmailParams, client *Client) {
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(i.Endpoint()+"/"+id+"/email?send_attachment=true", string(body))
 
-	sendResp(resp, err, i)
+	SendResp(resp, err, i)
 }
 
 // DownloadPDF method will download the pdf to the given filepath
