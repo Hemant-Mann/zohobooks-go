@@ -130,7 +130,7 @@ func getHTTPClient(timeout int) *http.Client {
 	return httpClient
 }
 
-func sendResp(resp *http.Response, err error, rs Resource) (*Response, error) {
+func SendResp(resp *http.Response, err error, rs Resource) (*Response, error) {
 	var newResp = &Response{}
 	if err != nil {
 		return newResp, err

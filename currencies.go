@@ -27,7 +27,7 @@ func (c *Currency) Endpoint() string {
 func (c *Currency) FindAll(client *Client) ([]Currency, error) {
 	var results []Currency
 	resp, err := client.Get(c.Endpoint())
-	respData, err := sendResp(resp, err, c)
+	respData, err := SendResp(resp, err, c)
 	if err != nil {
 		return results, err
 	}

@@ -68,7 +68,7 @@ func (p *Payment) Create(params *PaymentParams, client *Client) (*Payment, error
 	var body, _ = json.Marshal(params)
 	resp, err := client.Post(p.Endpoint(), string(body))
 
-	respData, err := sendResp(resp, err, p)
+	respData, err := SendResp(resp, err, p)
 	if err != nil {
 		return p, err
 	}
@@ -78,7 +78,7 @@ func (p *Payment) Create(params *PaymentParams, client *Client) (*Payment, error
 // FindOne tries to find the contact with given id
 func (p *Payment) FindOne(id string, client *Client) (*Payment, error) {
 	resp, err := client.Get(p.Endpoint() + "/" + id)
-	respData, err := sendResp(resp, err, p)
+	respData, err := SendResp(resp, err, p)
 	if err != nil {
 		return p, err
 	}
@@ -88,7 +88,7 @@ func (p *Payment) FindOne(id string, client *Client) (*Payment, error) {
 // Delete tries to delete the payment with given id
 func (p *Payment) Delete(id string, client *Client) error {
 	resp, err := client.Delete(p.Endpoint() + "/" + id)
-	respData, err := sendResp(resp, err, p)
+	respData, err := SendResp(resp, err, p)
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func (p *Payment) Delete(id string, client *Client) error {
 // FindAll tries to find the payment with given options
 func (p *Payment) FindAll(opts *PaymentFindOptions, client *Client) ([]Payment, error) {
 	resp, err := client.Get(p.Endpoint())
-	respData, err := sendResp(resp, err, p)
+	respData, err := SendResp(resp, err, p)
 
 	var results []Payment
 	if err != nil {
