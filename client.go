@@ -14,6 +14,7 @@ import (
 // BaseURL stores the API base URL
 const BaseURL = "https://books.zoho.com/api/v3"
 const OAuthURL = "https://accounts.zoho.com/oauth/v2/token"
+const OAuthURLIn = "https://accounts.zoho.in/oauth/v2/token"
 
 // Client struct
 type Client struct {
@@ -165,15 +166,14 @@ func (c *Client) getURL(path string) string {
 }
 
 func (c *Client) makeRequest(method, path string, body *bytes.Buffer, headers map[string]string) (*http.Response, error) {
-	if (len(c.Key) == 0 && len(c.OAuthToken) == 0) || len(c.OrgID) == 0 {
-		return nil, errors.New("missing authtoken or org id")
+	if len(c.OAuthToken) == 0 || len(c.OrgID) == 0 {
+		return nil, errors.New("missing oauthtoken or org id")
 	}
 	req, _ := http.NewRequest(method, c.getURL(path), body)
-	if headers != nil {
-		for k, v := range headers {
-			req.Header.Set(k, v)
-		}
+	for k, v := range headers {
+		req.Header.Set(k, v)
 	}
+
 	if len(c.OAuthToken) > 0 {
 		req.Header.Set("Authorization", "Zoho-oauthtoken "+c.OAuthToken)
 	} else if len(c.Key) > 0 { // Zoho authtoken are deprecated use oauthtokens
@@ -218,9 +218,16 @@ func (c *Client) Delete(path string) (*http.Response, error) {
 	return c.makeRequest("DELETE", path, bytes.NewBuffer([]byte("")), headers)
 }
 
+func (c *Client) GetOauthURL() string {
+	if c.Datacenter == "in" || c.Datacenter == "IN" {
+		return OAuthURLIn
+	}
+	return OAuthURL
+}
+
 func (c *Client) GenAccessToken() (string, error) {
 	var query = "refresh_token=" + c.refreshToken + "&client_id=" + c.clientID + "&client_secret=" + c.clientSecret + "&redirect_uri=" + c.redirectURI + "&grant_type=refresh_token"
-	req, err := http.NewRequest("POST", OAuthURL+"?"+query, nil)
+	req, err := http.NewRequest("POST", c.GetOauthURL()+"?"+query, nil)
 	if err != nil {
 		return "", err
 	}
