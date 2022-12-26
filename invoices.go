@@ -9,6 +9,15 @@ import (
 // TaxIGST name of tax type
 const TaxIGST = "IGST"
 
+// TaxIGST0 name of tax type
+const TaxIGST0 = "IGST0"
+
+const InvStatusPushed = "pushed"
+
+const InvStatusCancelled = "cancelled"
+
+const InvStatusYTP = "yet_to_be_pushed"
+
 // TaxIGST18 name of the tax
 const TaxIGST18 = "IGST18"
 
@@ -59,6 +68,20 @@ type Invoice struct {
 	CreatedTime       string  `json:"created_time"`
 	LastModifiedTime  string  `json:"last_modified_time"`
 	InvoiceURL        string  `json:"invoice_url"`
+
+	Country     string      `json:"country"`
+	EInvDetails EInvDetails `json:"einvoice_details"`
+
+	BillingAddress  BillingAddress `json:"billing_address"`
+	ShippingAddress BillingAddress `json:"shipping_address"`
+}
+
+type EInvDetails struct {
+	InvRefNo     string `json:"inv_ref_num"`
+	AckNo        string `json:"ack_number"`
+	Status       string `json:"status"`
+	FormatStatus string `json:"formatted_status"`
+	AckDate      string `json:"ack_date"`
 }
 
 // LineItem struct contains info about the line items of the invoice
@@ -103,6 +126,12 @@ type InvoiceParams struct {
 	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes,omitempty"`
 	Terms             string     `json:"terms,omitempty"`
+
+	Country     string      `json:"country"`
+	EInvDetails EInvDetails `json:"einvoice_details"`
+
+	BillingAddress  BillingAddress `json:"billing_address"`
+	ShippingAddress BillingAddress `json:"shipping_address"`
 }
 
 // InvoiceEmailParams struct contains the parameters to be used while sending invoices
