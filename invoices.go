@@ -2,6 +2,7 @@ package zohobooks
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 )
@@ -171,6 +172,18 @@ func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Inv
 	var body, _ = json.Marshal(params)
 	resp, err := client.Put(i.Endpoint()+"/"+id, string(body))
 
+	respData, err := SendResp(resp, err, i)
+	if err != nil {
+		return i, err
+	}
+	return &respData.Invoice, err
+}
+
+// UpdateInvBillingAddress method will try to update a invoice billing address on zohobooks for IRP Push
+func (i *Invoice) UpdateInvBillingAddress(id, country string, client *Client) (*Invoice, error) {
+	url := fmt.Sprintf("%s/%s/address/billing", i.Endpoint(), id)
+	body := fmt.Sprintf("{\"country\": \"%s\"}", country)
+	resp, err := client.Put(url, body)
 	respData, err := SendResp(resp, err, i)
 	if err != nil {
 		return i, err
