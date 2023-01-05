@@ -27,6 +27,12 @@ type taxInfo struct {
 	TaxAmount float64 `json:"tax_amount"`
 }
 
+type LineItemTaxes struct {
+	TaxId   string  `json:"tax_id"`
+	TaxName string  `json:"tax_name"`
+	TaxAmt  float32 `json:"tax_amount"`
+}
+
 // Invoice struct represents the information of the invoice
 type Invoice struct {
 	ID             string   `json:"invoice_id"`
@@ -100,6 +106,8 @@ type LineItem struct {
 	TaxName     string  `json:"tax_name,omitempty"`
 	TaxType     string  `json:"tax_type,omitempty"`
 	TaxPercent  float64 `json:"tax_percentage,omitempty"`
+
+	LineItemTaxes []LineItemTaxes `json:"line_item_taxes,omitempty"`
 }
 
 // InvoiceParams struct represents the information to create a invoice
