@@ -137,10 +137,6 @@ type InvoiceParams struct {
 	Terms             string     `json:"terms,omitempty"`
 
 	Country     string      `json:"country"`
-	EInvDetails EInvDetails `json:"einvoice_details"`
-
-	BillingAddress  BillingAddress `json:"billing_address"`
-	ShippingAddress BillingAddress `json:"shipping_address"`
 }
 
 // InvoiceEmailParams struct contains the parameters to be used while sending invoices
