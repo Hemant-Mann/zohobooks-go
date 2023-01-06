@@ -2,6 +2,7 @@ package zohobooks
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 )
@@ -9,12 +10,27 @@ import (
 // TaxIGST name of tax type
 const TaxIGST = "IGST"
 
+// TaxIGST0 name of tax type
+const TaxIGST0 = "IGST0"
+
+const InvStatusPushed = "pushed"
+
+const InvStatusCancelled = "cancelled"
+
+const InvStatusYTP = "yet_to_be_pushed"
+
 // TaxIGST18 name of the tax
 const TaxIGST18 = "IGST18"
 
 type taxInfo struct {
 	TaxName   string  `json:"tax_name"`
 	TaxAmount float64 `json:"tax_amount"`
+}
+
+type LineItemTaxes struct {
+	TaxId   string  `json:"tax_id"`
+	TaxName string  `json:"tax_name"`
+	TaxAmt  float32 `json:"tax_amount"`
 }
 
 // Invoice struct represents the information of the invoice
@@ -59,6 +75,20 @@ type Invoice struct {
 	CreatedTime       string  `json:"created_time"`
 	LastModifiedTime  string  `json:"last_modified_time"`
 	InvoiceURL        string  `json:"invoice_url"`
+
+	Country     string      `json:"country"`
+	EInvDetails EInvDetails `json:"einvoice_details"`
+
+	BillingAddress  BillingAddress `json:"billing_address"`
+	ShippingAddress BillingAddress `json:"shipping_address"`
+}
+
+type EInvDetails struct {
+	InvRefNo     string `json:"inv_ref_num"`
+	AckNo        string `json:"ack_number"`
+	Status       string `json:"status"`
+	FormatStatus string `json:"formatted_status"`
+	AckDate      string `json:"ack_date"`
 }
 
 // LineItem struct contains info about the line items of the invoice
@@ -76,6 +106,8 @@ type LineItem struct {
 	TaxName     string  `json:"tax_name,omitempty"`
 	TaxType     string  `json:"tax_type,omitempty"`
 	TaxPercent  float64 `json:"tax_percentage,omitempty"`
+
+	LineItemTaxes []LineItemTaxes `json:"line_item_taxes,omitempty"`
 }
 
 // InvoiceParams struct represents the information to create a invoice
@@ -103,6 +135,12 @@ type InvoiceParams struct {
 	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes,omitempty"`
 	Terms             string     `json:"terms,omitempty"`
+
+	Country     string      `json:"country"`
+	EInvDetails EInvDetails `json:"einvoice_details"`
+
+	BillingAddress  BillingAddress `json:"billing_address"`
+	ShippingAddress BillingAddress `json:"shipping_address"`
 }
 
 // InvoiceEmailParams struct contains the parameters to be used while sending invoices
@@ -142,6 +180,18 @@ func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Inv
 	var body, _ = json.Marshal(params)
 	resp, err := client.Put(i.Endpoint()+"/"+id, string(body))
 
+	respData, err := SendResp(resp, err, i)
+	if err != nil {
+		return i, err
+	}
+	return &respData.Invoice, err
+}
+
+// UpdateInvBillingAddress method will try to update a invoice billing address on zohobooks for IRP Push
+func (i *Invoice) UpdateInvBillingAddress(id, country string, client *Client) (*Invoice, error) {
+	url := fmt.Sprintf("%s/%s/address/billing", i.Endpoint(), id)
+	body := fmt.Sprintf("{\"country\": \"%s\"}", country)
+	resp, err := client.Put(url, body)
 	respData, err := SendResp(resp, err, i)
 	if err != nil {
 		return i, err

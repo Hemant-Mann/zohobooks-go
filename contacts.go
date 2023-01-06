@@ -37,6 +37,14 @@ type Contact struct {
 	CreatedTime  string `json:"created_time"`
 
 	LastModifiedTime string `json:"last_modified_time"`
+
+	Status        string  `json:"status"`
+	TaxPercentage float64 `json:"tax_percentage"`
+	CC            string  `json:"country_code"`
+	POC           string  `json:"place_of_contact"` // should be same as billing state
+	TaxName       string  `json:"tax_name"`         // IGST0
+	LegalName     string  `json:"legal_name"`
+	Country       string  `json:"country"`
 }
 
 type BillingAddress struct {
@@ -76,6 +84,14 @@ type ContactParams struct {
 	GstNO        string `json:"gst_no,omitempty"`        // 15 digit
 	GstTreatment string `json:"gst_treatment,omitempty"` // Allowed values are business_gst , business_none , overseas , consumer
 	TaxID        string `json:"tax_id,omitempty"`
+
+	Status        string  `json:"status"`
+	TaxPercentage float64 `json:"tax_percentage"`
+	CC            string  `json:"country_code"`
+	POC           string  `json:"place_of_contact"` // should be same as billing state
+	TaxName       string  `json:"tax_name"`         // IGST0
+	LegalName     string  `json:"legal_name"`
+	Country       string  `json:"country"`
 }
 
 // New method will create a contact object and return a pointer to it
