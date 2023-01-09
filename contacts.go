@@ -39,7 +39,6 @@ type Contact struct {
 	LastModifiedTime string `json:"last_modified_time"`
 
 	Status        string  `json:"status"`
-	TaxPercentage string  `json:"tax_percentage"`
 	CC            string  `json:"country_code"`
 	POC           string  `json:"place_of_contact"` // should be same as billing state
 	TaxName       string  `json:"tax_name"`         // IGST0
