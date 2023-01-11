@@ -150,11 +150,11 @@ type InvoiceEmailParams struct {
 
 //Billing Address Params for Invoice
 type BAddrInvoiceParams struct {
-	Address string `json:"address,omitempty",`
-	City    string `json:"city,omitempty",`
+	Address string `json:"address,omitempty"`
+	City    string `json:"city,omitempty"`
 	State   string `json:"state,omitempty"`
-	Zip     string `json:"zip,omitempty",`
-	Country string `json:"country,omitempty",`
+	Zip     string `json:"zip,omitempty"`
+	Country string `json:"country,omitempty"`
 }
 
 // New method will create a invoice object and return a pointer to it
