@@ -136,7 +136,7 @@ type InvoiceParams struct {
 	Notes             string     `json:"notes,omitempty"`
 	Terms             string     `json:"terms,omitempty"`
 
-	Country     string      `json:"country"`
+	Country string `json:"country"`
 }
 
 // InvoiceEmailParams struct contains the parameters to be used while sending invoices
@@ -146,6 +146,15 @@ type InvoiceEmailParams struct {
 	CCMailIDs        []string `json:"cc_mail_ids,omitempty"`
 	Subject          string   `json:"subject,omitempty"`
 	Body             string   `json:"body,omitempty"`
+}
+
+//Billing Address Params for Invoice
+type BAddrInvoiceParams struct {
+	Address string `json:"address,omitempty",`
+	City    string `json:"city,omitempty",`
+	State   string `json:"state,omitempty"`
+	Zip     string `json:"zip,omitempty",`
+	Country string `json:"country,omitempty",`
 }
 
 // New method will create a invoice object and return a pointer to it
@@ -183,11 +192,10 @@ func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Inv
 	return &respData.Invoice, err
 }
 
-// UpdateInvBillingAddress method will try to update a invoice billing address on zohobooks for IRP Push
-func (i *Invoice) UpdateInvBillingAddress(id, country string, client *Client) (*Invoice, error) {
+func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoiceParams, client *Client) (*Invoice, error) {
 	url := fmt.Sprintf("%s/%s/address/billing", i.Endpoint(), id)
-	body := fmt.Sprintf("{\"country\": \"%s\"}", country)
-	resp, err := client.Put(url, body)
+	var body, _ = json.Marshal(billingAddress)
+	resp, err := client.Put(url, string(body))
 	respData, err := SendResp(resp, err, i)
 	if err != nil {
 		return i, err
