@@ -148,6 +148,15 @@ type InvoiceEmailParams struct {
 	Body             string   `json:"body,omitempty"`
 }
 
+//Billing Address Params for Invoice
+type BAddrInvoiceParams struct {
+	Address string `json:"address",omitempty`
+	City    string `json:"city",omitempty`
+	State   string `json:"state",omitempty`
+	Zip     string `json:"zip",omitempty`
+	Country string `json:"country",omitempty`
+}
+
 // New method will create a invoice object and return a pointer to it
 func (i *Invoice) New() Resource {
 	var obj = &Invoice{}
@@ -199,6 +208,17 @@ func (i *Invoice) UpdateInvBillingAddress(id, country string, client *Client) (*
 func (i *Invoice) FindOne(id string, client *Client) (*Invoice, error) {
 	resp, err := client.Get(i.Endpoint() + "/" + id)
 	respData, err := SendResp(resp, err, i)
+	if err != nil {
+		return i, err
+	}
+	return &respData.Invoice, err
+}
+
+func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoiceParams, client *Client) (*Invoice, error) {
+	url := fmt.Sprintf("%s/%s/address/billing", i.Endpoint(), id)
+	var body, _ = json.Marshal(billingAddress)
+	resp, err := client.Put(url, string(body))
+	respData, err := sendResp(resp, err, i)
 	if err != nil {
 		return i, err
 	}
