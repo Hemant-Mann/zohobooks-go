@@ -196,7 +196,7 @@ func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoic
 	url := fmt.Sprintf("%s/%s/address/billing", i.Endpoint(), id)
 	var body, _ = json.Marshal(billingAddress)
 	resp, err := client.Put(url, string(body))
-	respData, err := sendResp(resp, err, i)
+	respData, err := SendResp(resp, err, i)
 	if err != nil {
 		return i, err
 	}
