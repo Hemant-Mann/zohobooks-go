@@ -84,13 +84,13 @@ type ContactParams struct {
 	GstTreatment string `json:"gst_treatment,omitempty"` // Allowed values are business_gst , business_none , overseas , consumer
 	TaxID        string `json:"tax_id,omitempty"`
 
-	Status        string  `json:"status"`
-	TaxPercentage float64 `json:"tax_percentage"`
-	CC            string  `json:"country_code"`
-	POC           string  `json:"place_of_contact"` // should be same as billing state
-	TaxName       string  `json:"tax_name"`         // IGST0
-	LegalName     string  `json:"legal_name"`
-	Country       string  `json:"country"`
+	Status        string  `json:"status,omitempty"`
+	TaxPercentage float64 `json:"tax_percentage,omitempty"`
+	CC            string  `json:"country_code,omitempty"`
+	POC           string  `json:"place_of_contact,omitempty"` // should be same as billing state
+	TaxName       string  `json:"tax_name,omitempty"`         // IGST0
+	LegalName     string  `json:"legal_name,omitempty"`
+	Country       string  `json:"country,omitempty"`
 }
 
 // New method will create a contact object and return a pointer to it
