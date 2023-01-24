@@ -2,9 +2,12 @@ package zohobooks
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
+	"strings"
+	"time"
 )
 
 // TaxIGST name of tax type
@@ -130,7 +133,6 @@ type InvoiceParams struct {
 	IsInclusiveTax    bool       `json:"is_inclusive_tax"`
 	Discount          float64    `json:"discount,omitempty"`
 	TaxID             string     `json:"tax_id,omitempty"`
-	RefNo             string     `json:"reference_number,omitempty"`
 	Reason            string     `json:"reason,omitempty"` // required when updating sent invoice
 	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes,omitempty"`
@@ -150,11 +152,11 @@ type InvoiceEmailParams struct {
 
 //Billing Address Params for Invoice
 type BAddrInvoiceParams struct {
-	Address string `json:"address,omitempty",`
-	City    string `json:"city,omitempty",`
+	Address string `json:"address,omitempty"`
+	City    string `json:"city,omitempty"`
 	State   string `json:"state,omitempty"`
-	Zip     string `json:"zip,omitempty",`
-	Country string `json:"country,omitempty",`
+	Zip     string `json:"zip,omitempty"`
+	Country string `json:"country,omitempty"`
 }
 
 // New method will create a invoice object and return a pointer to it
@@ -192,6 +194,7 @@ func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Inv
 	return &respData.Invoice, err
 }
 
+//update invoice billing address
 func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoiceParams, client *Client) (*Invoice, error) {
 	url := fmt.Sprintf("%s/%s/address/billing", i.Endpoint(), id)
 	var body, _ = json.Marshal(billingAddress)
@@ -201,6 +204,25 @@ func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoic
 		return i, err
 	}
 	return &respData.Invoice, err
+}
+
+//push Invoice to IRP portal and returns the Invoice with IRP Ack Num and Ref Num
+func (i *Invoice) PushInvoiceToIRP(id string, client *Client) (*Invoice, error) {
+	url := fmt.Sprintf("%s/%s/einvoice/push", i.Endpoint(), id)
+	resp, err := client.Post(url, "")
+	respData, err := SendResp(resp, err, i)
+	if err != nil {
+		return i, err
+	}
+	if len(respData.Data.Errors) > 0 {
+		return i, errors.New(strings.ToLower(respData.Data.Errors[0].Message))
+	}
+	time.Sleep(1 * time.Second)
+	pushedInvoice, err := i.FindOne(id, client)
+	if err != nil {
+		return i, err
+	}
+	return pushedInvoice, err
 }
 
 // FindOne tries to find the invoice with given id

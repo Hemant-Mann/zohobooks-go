@@ -62,6 +62,16 @@ type Response struct {
 	Payments     []Payment     `json:"customerpayments"`
 	Currencies   []Currency    `json:"currencies"`
 	BankAccounts []BankAccount `json:"bankaccounts"`
+	Data         Error         `json:"data"`
+}
+
+type Error struct {
+	Errors []Response2 `json:"errors"`
+}
+
+type Response2 struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
 }
 
 // Resource interface is to be used for generic decoding of object
