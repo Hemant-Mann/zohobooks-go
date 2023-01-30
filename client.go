@@ -62,14 +62,14 @@ type Response struct {
 	Payments     []Payment     `json:"customerpayments"`
 	Currencies   []Currency    `json:"currencies"`
 	BankAccounts []BankAccount `json:"bankaccounts"`
-	Data         Error         `json:"data"`
+	Data         zohoRespError `json:"data"`
 }
 
-type Error struct {
-	Errors []Response2 `json:"errors"`
+type zohoRespError struct {
+	Errors []response2 `json:"errors"`
 }
 
-type Response2 struct {
+type response2 struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }

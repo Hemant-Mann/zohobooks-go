@@ -212,15 +212,15 @@ func (i *Invoice) PushInvoiceToIRP(id string, client *Client) (*Invoice, error) 
 	resp, err := client.Post(url, "")
 	respData, err := SendResp(resp, err, i)
 	if err != nil {
-		return i, err
+		return nil, err
 	}
 	if len(respData.Data.Errors) > 0 {
-		return i, errors.New(strings.ToLower(respData.Data.Errors[0].Message))
+		return nil, errors.New(strings.ToLower(respData.Data.Errors[0].Message))
 	}
 	time.Sleep(1 * time.Second)
 	pushedInvoice, err := i.FindOne(id, client)
 	if err != nil {
-		return i, err
+		return nil, err
 	}
 	return pushedInvoice, err
 }
