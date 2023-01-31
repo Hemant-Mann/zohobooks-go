@@ -1,6 +1,7 @@
 package zohobooks
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -212,8 +213,9 @@ func (i *Invoice) PushInvoiceToIRP(id string, client *Client) (*Invoice, error) 
 	fmt.Printf("==url: %s\n", url)
 	fmt.Printf("==client: %+v\n", client)
 	headers := map[string]string{}
+	var emptyBody []byte
 
-	resp, err := client.makeRequest("POST", url, nil, headers)
+	resp, err := client.makeRequest("POST", url, bytes.NewBuffer(emptyBody), headers)
 	// resp, err := client.Post(url, "")
 	respData, err := SendResp(resp, err, i)
 	if err != nil {
