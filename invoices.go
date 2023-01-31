@@ -210,18 +210,21 @@ func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoic
 func (i *Invoice) PushInvoiceToIRP(id string, client *Client) (*Invoice, error) {
 	url := fmt.Sprintf("%s/%s/einvoice/push", i.Endpoint(), id)
 	fmt.Printf("==url: %s\n", url)
-	fmt.Printf("==client: %v\n", client)
+	fmt.Printf("==client: %+v\n", client)
 	resp, err := client.Post(url, "")
 	respData, err := SendResp(resp, err, i)
 	if err != nil {
+		fmt.Printf("==err1: %+v\n", err)
 		return nil, err
 	}
 	if len(respData.Data.Errors) > 0 {
+		fmt.Printf("==err2: %+v\n", respData)
 		return nil, errors.New(strings.ToLower(respData.Data.Errors[0].Message))
 	}
 	time.Sleep(1 * time.Second)
 	pushedInvoice, err := i.FindOne(id, client)
 	if err != nil {
+		fmt.Printf("==err3: %+v\n", err)
 		return nil, err
 	}
 	return pushedInvoice, err
