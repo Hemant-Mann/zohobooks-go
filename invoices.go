@@ -209,6 +209,8 @@ func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoic
 //push Invoice to IRP portal and returns the Invoice with IRP Ack Num and Ref Num
 func (i *Invoice) PushInvoiceToIRP(id string, client *Client) (*Invoice, error) {
 	url := fmt.Sprintf("%s/%s/einvoice/push", i.Endpoint(), id)
+	fmt.Printf("==url: %s\n", url)
+	fmt.Printf("==client: %v\n", client)
 	resp, err := client.Post(url, "")
 	respData, err := SendResp(resp, err, i)
 	if err != nil {
