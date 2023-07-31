@@ -64,6 +64,8 @@ type Invoice struct {
 	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes"`
 	Terms             string     `json:"terms"`
+	BranchID          string     `json:"branch_id"`
+	BranchName        string     `json:"branch_name"`
 
 	SubTotal float64   `json:"sub_total"`
 	TaxTotal float64   `json:"tax_total"`
@@ -138,6 +140,7 @@ type InvoiceParams struct {
 	LineItems         []LineItem `json:"line_items"`
 	Notes             string     `json:"notes,omitempty"`
 	Terms             string     `json:"terms,omitempty"`
+	BranchID          string     `json:"branch_id,omitempty"`
 
 	Country string `json:"country"`
 }
@@ -151,7 +154,7 @@ type InvoiceEmailParams struct {
 	Body             string   `json:"body,omitempty"`
 }
 
-//Billing Address Params for Invoice
+// Billing Address Params for Invoice
 type BAddrInvoiceParams struct {
 	Address string `json:"address,omitempty"`
 	City    string `json:"city,omitempty"`
@@ -195,7 +198,7 @@ func (i *Invoice) Update(id string, params *InvoiceParams, client *Client) (*Inv
 	return &respData.Invoice, err
 }
 
-//update invoice billing address
+// update invoice billing address
 func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoiceParams, client *Client) (*Invoice, error) {
 	url := fmt.Sprintf("%s/%s/address/billing", i.Endpoint(), id)
 	var body, _ = json.Marshal(billingAddress)
@@ -207,7 +210,7 @@ func (i *Invoice) UpdateInvBillingAddress(id string, billingAddress *BAddrInvoic
 	return &respData.Invoice, err
 }
 
-//push Invoice to IRP portal and returns the Invoice with IRP Ack Num and Ref Num
+// push Invoice to IRP portal and returns the Invoice with IRP Ack Num and Ref Num
 func (i *Invoice) PushInvoiceToIRP(id string, client *Client) (*Invoice, error) {
 	url := fmt.Sprintf("%s/%s/einvoice/push", i.Endpoint(), id)
 	headers := map[string]string{}
