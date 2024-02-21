@@ -6,7 +6,7 @@ import (
 )
 
 type ContactPerson struct {
-	ID        string `json:"contact_person_id"`
+	ID        string `json:"contact_person_id,omitempty"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
