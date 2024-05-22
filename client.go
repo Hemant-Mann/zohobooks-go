@@ -12,9 +12,17 @@ import (
 )
 
 // BaseURL stores the API base URL
-const BaseURL = "https://books.zoho.com/api/v3"
+const BaseURL = "https://www.zohoapis.com/books/v3"
+
+const BaseURLUS = "https://www.zohoapis.com/books/v3"
+const BaseURLIN = "https://www.zohoapis.in/books/v3"
+const BaseURLEU = "https://www.zohoapis.eu/books/v3"
+const BaseURLAU = "https://www.zohoapis.com.au/books/v3"
+
 const OAuthURL = "https://accounts.zoho.com/oauth/v2/token"
 const OAuthURLIn = "https://accounts.zoho.in/oauth/v2/token"
+const OAuthURLEu = "https://accounts.zoho.eu/oauth/v2/token"
+const OAuthURLAu = "https://accounts.zoho.com.au/oauth/v2/token"
 
 // Client struct
 type Client struct {
@@ -123,15 +131,15 @@ func NewClientWithConfig(conf *ClientConfig) *Client {
 // datacenter while initializing the client
 func (c *Client) GetBaseURL() string {
 	if c.Datacenter == "in" || c.Datacenter == "IN" {
-		return "https://books.zoho.in/api/v3"
+		return BaseURLIN
 	}
 	if c.Datacenter == "eu" {
-		return "https://books.zoho.eu/api/v3"
+		return BaseURLEU
 	}
 	if c.Datacenter == "au" {
-		return "https://books.zoho.com.au/api/v3"
+		return BaseURLAU
 	}
-	return "https://books.zoho.com/api/v3"
+	return BaseURLUS
 }
 
 func getHTTPClient(timeout int) *http.Client {
@@ -231,6 +239,12 @@ func (c *Client) Delete(path string) (*http.Response, error) {
 func (c *Client) GetOauthURL() string {
 	if c.Datacenter == "in" || c.Datacenter == "IN" {
 		return OAuthURLIn
+	}
+	if c.Datacenter == "au" {
+		return OAuthURLAu
+	}
+	if c.Datacenter == "eu" {
+		return OAuthURLEu
 	}
 	return OAuthURL
 }
