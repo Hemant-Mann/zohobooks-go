@@ -250,6 +250,12 @@ func (i *Invoice) Email(id string, params *InvoiceEmailParams, client *Client) {
 	SendResp(resp, err, i)
 }
 
+//This methods will update the invoice status
+func (i *Invoice) UpdateInvStatus(id, status string, client *Client) {
+	resp, err := client.Post(i.Endpoint()+"/"+id+"/status/"+status, "")
+	SendResp(resp, err, i)
+}
+
 // DownloadPDF method will download the pdf to the given filepath
 func (i *Invoice) DownloadPDF(id, filepath string, client *Client) error {
 	// Create the file
